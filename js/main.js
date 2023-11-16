@@ -15,27 +15,30 @@ function resetBoard() {
   document.getElementById("board").innerHTML = "";
 }
 
+
+
 //funzione genera bombe
 function generateBombs(level) {
+  const bombs = [];
   let maxNumber;
   switch (level) {
-    case 3:
+    case 1:
       maxNumber = 100;
       break;
     case 2:
       maxNumber = 81;
       break;
-    case 1:
+    case 3:
       maxNumber = 49;
       break;
   }
-  const bombs = [];
   while (bombs.length < 16) {
     const randomNum = Math.floor(Math.random() * maxNumber) + 1;
     if (!bombs.includes(randomNum)) {
       bombs.push(randomNum);
     }
   }
+  bombs.sort((a, b) => a - b);
   return bombs;
 }
 
@@ -53,16 +56,16 @@ function setCellNumber(level) {
   let cellNumber;
   switch (level) {
     case 2:
-      cellNumber = 81; //9*9 = 9^2
+      cellNumber = 81;
       break;
 
     case 3:
-      cellNumber = 49; //7*7 = 7^2
+      cellNumber = 49;
       break;
 
     case 1:
     default:
-      cellNumber = 100; //9*9 = 9^2
+      cellNumber = 100;
       break;
   }
 
@@ -72,7 +75,19 @@ function setCellNumber(level) {
 //funzione counter
 function counter() {
   const clickedCells = document.querySelectorAll(".blue").length;
-  document.getElementById("counter").textContent = `Il tuo punteggio è: ${clickedCells}`;
+  document.getElementById("game-info").textContent = `Il tuo punteggio è: ${clickedCells}`;
+}
+
+//funzione end game
+function endGame() {
+  const clickedCells = document.querySelectorAll(".blue").length;
+  const totalCells = document.querySelectorAll(".cell").length;
+  console.log(clickedCells, totalCells);
+  if (clickedCells === totalCells - 16) {
+    const infoDiv = document.getElementById("game-info");
+    const h2 = createElement("h2", "winner", "Hai vinto!")
+    infoDiv.appendChild(h2);
+  }
 }
 
 //funzione crea board
@@ -80,6 +95,7 @@ function createBoard(mainElement, cellNumber) {
   const cells = Math.sqrt(cellNumber);
   const level = parseInt(document.getElementById("difficolta").value);
   const bombs = generateBombs(level);
+  console.log(bombs);
   const fragment = document.createDocumentFragment();
 
 
@@ -97,7 +113,7 @@ function createBoard(mainElement, cellNumber) {
         counter();
       }
     });
-
+    myElement.addEventListener("click", endGame);
     fragment.append(myElement);
   }
   mainElement.append(fragment);
@@ -108,11 +124,8 @@ function campoMinato() {
   resetBoard();
   const board = document.getElementById("board");
   const level = parseInt(document.getElementById("difficolta").value);
-  console.log(level);
   const cellNumber = setCellNumber(level);
-
-  const bombs = generateBombs(level);
-  console.log(bombs);
+  generateBombs(level);
   counter();
   createBoard(board, cellNumber);
 }
@@ -121,6 +134,7 @@ function campoMinato() {
 
 const playButton = document.getElementById("play");
 playButton.addEventListener("click", campoMinato);
+
 
 // playButton.addEventListener("click", function () {
 //   resetBoard();
