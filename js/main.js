@@ -87,6 +87,7 @@ function endGame() {
     const infoDiv = document.getElementById("game-info");
     const h2 = createElement("h2", "winner", "Hai vinto!")
     infoDiv.appendChild(h2);
+    gameEnded = true;
   }
 }
 
@@ -104,16 +105,20 @@ function createBoard(mainElement, cellNumber) {
     myElement.classList.add(`cell-${cells}`);
 
     myElement.addEventListener("click", function () {
+      if (gameEnded) {
+        return;
+      }
       console.log(`Cell ${i} clicked!`);
       checkBomb(i, bombs);
       if (bombs.includes(i)) {
         myElement.classList.add("red");
+        gameEnded = true;
       } else {
         myElement.classList.add("blue");
         counter();
+        endGame();
       }
     });
-    myElement.addEventListener("click", endGame);
     fragment.append(myElement);
   }
   mainElement.append(fragment);
@@ -121,6 +126,7 @@ function createBoard(mainElement, cellNumber) {
 
 //funzione campo minato
 function campoMinato() {
+  gameEnded = false;
   resetBoard();
   const board = document.getElementById("board");
   const level = parseInt(document.getElementById("difficolta").value);
@@ -131,7 +137,7 @@ function campoMinato() {
 }
 
 // execution
-
+let gameEnded = false;
 const playButton = document.getElementById("play");
 playButton.addEventListener("click", campoMinato);
 
