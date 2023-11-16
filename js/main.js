@@ -88,7 +88,7 @@ function endGame() {
     const h2 = createElement("h2", "winner", "Hai vinto!")
     infoDiv.appendChild(h2);
     gameEnded = true;
-  }
+  } 
 }
 
 //funzione crea board
@@ -112,6 +112,9 @@ function createBoard(mainElement, cellNumber) {
       checkBomb(i, bombs);
       if (bombs.includes(i)) {
         myElement.classList.add("red");
+        const infoDiv = document.getElementById("game-info");
+        const h2 = createElement("h2", "loser", "Hai perso! Per giocare di nuovo clicca su Play");
+        infoDiv.appendChild(h2);
         gameEnded = true;
       } else {
         myElement.classList.add("blue");
