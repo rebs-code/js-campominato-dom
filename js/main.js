@@ -42,12 +42,11 @@ function generateBombs(level) {
 //funzione esito del click
 function checkBomb(cellNumber, bombs) {
   if (bombs.includes(cellNumber)) {
-    console.log('BOOM! Game over.');
+    console.log("BOOM! Game over.");
   } else {
-    console.log('You are safe!');
+    console.log("You are safe!");
   }
 }
-
 
 //funzione determina numero celle
 function setCellNumber(level) {
@@ -73,17 +72,22 @@ function setCellNumber(level) {
 //funzione crea board
 function createBoard(mainElement, cellNumber) {
   const cells = Math.sqrt(cellNumber);
-  const level = parseInt(document.getElementById('difficolta').value);
+  const level = parseInt(document.getElementById("difficolta").value);
   const bombs = generateBombs(level);
   const fragment = document.createDocumentFragment();
   for (let i = 1; i <= cellNumber; i++) {
-    const myElement = createElement('div', 'cell', i);
+    const myElement = createElement("div", "cell", i);
     myElement.classList.add(`cell-${cells}`);
 
-    myElement.addEventListener('click', function () {
+    myElement.addEventListener("click", function () {
       console.log(`Cell ${i} clicked!`);
-      myElement.classList.add('blue');
+      myElement.classList.add("blue");
       checkBomb(i, bombs);
+      if (bombs.includes(i)) {
+        myElement.classList.add("red");
+      } else {
+        myElement.classList.add("blue");
+      }
     });
 
     fragment.append(myElement);
@@ -94,24 +98,21 @@ function createBoard(mainElement, cellNumber) {
 //funzione campo minato
 function campoMinato() {
   resetBoard();
-  const board = document.getElementById('board');
-  const level = parseInt(document.getElementById('difficolta').value);
+  const board = document.getElementById("board");
+  const level = parseInt(document.getElementById("difficolta").value);
   console.log(level);
   const cellNumber = setCellNumber(level);
 
   const bombs = generateBombs(level);
   console.log(bombs);
 
-
   createBoard(board, cellNumber);
 }
-
 
 // execution
 
 const playButton = document.getElementById("play");
-playButton.addEventListener('click', campoMinato);
-
+playButton.addEventListener("click", campoMinato);
 
 // playButton.addEventListener("click", function () {
 //   resetBoard();
