@@ -32,7 +32,9 @@ function generateBombs(level) {
   const bombs = [];
   while (bombs.length < 16) {
     const randomNum = Math.floor(Math.random() * maxNumber) + 1;
-    bombs.push(randomNum);
+    if (!bombs.includes(randomNum)) {
+      bombs.push(randomNum);
+    }
   }
   console.log(bombs);
   return bombs;

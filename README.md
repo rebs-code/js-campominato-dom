@@ -59,15 +59,12 @@ function generateBombs(level) {
   switch (level) {
     case 1:
       maxNumber = 100;
-      gridSize = 10;
       break;
     case 2:
-      maxNumber = 81;
-      gridSize = 9;
+      maxNumber = 81;;
       break;
     case 3:
       maxNumber = 49;
-      gridSize = 7;
       break;
   }
   const bombs = [];
@@ -79,9 +76,7 @@ function generateBombs(level) {
   return bombs;
 }
 
-
-
-
+2- 
 
 
 
