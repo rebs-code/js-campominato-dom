@@ -15,8 +15,6 @@ function resetBoard() {
   document.getElementById("board").innerHTML = "";
 }
 
-
-
 //funzione genera bombe
 function generateBombs(level) {
   const bombs = [];
@@ -75,7 +73,9 @@ function setCellNumber(level) {
 //funzione counter
 function counter() {
   const clickedCells = document.querySelectorAll(".blue").length;
-  document.getElementById("game-info").textContent = `Il tuo punteggio è: ${clickedCells}`;
+  document.getElementById(
+    "game-info"
+  ).textContent = `Il tuo punteggio è: ${clickedCells}`;
 }
 
 //funzione end game
@@ -85,10 +85,15 @@ function endGame() {
   console.log(clickedCells, totalCells);
   if (clickedCells === totalCells - 16) {
     const infoDiv = document.getElementById("game-info");
-    const h2 = createElement("h2", "winner", "Hai vinto!")
+    const h2 = createElement("h2", "winner", "Hai vinto!");
     infoDiv.appendChild(h2);
     gameEnded = true;
-  } 
+  }
+}
+
+//funzione per marcare le bombe
+function markBomb(element) {
+  element.classList.add("bomb");
 }
 
 //funzione crea board
@@ -99,11 +104,12 @@ function createBoard(mainElement, cellNumber) {
   console.log(bombs);
   const fragment = document.createDocumentFragment();
 
-
   for (let i = 1; i <= cellNumber; i++) {
     const myElement = createElement("div", "cell", i);
     myElement.classList.add(`cell-${cells}`);
-
+    if (bombs.includes(i)) {
+      markBomb(myElement);
+    }
     myElement.addEventListener("click", function () {
       if (gameEnded) {
         return;
@@ -111,9 +117,16 @@ function createBoard(mainElement, cellNumber) {
       console.log(`Cell ${i} clicked!`);
       checkBomb(i, bombs);
       if (bombs.includes(i)) {
-        myElement.classList.add("red");
+        //querySelectorAll restituisce un array di elementi
+        document.querySelectorAll(".bomb").forEach((element) => {
+          element.classList.add("red");
+        });
         const infoDiv = document.getElementById("game-info");
-        const h2 = createElement("h2", "loser", "Hai perso! Per giocare di nuovo clicca su Play");
+        const h2 = createElement(
+          "h2",
+          "loser",
+          "Hai perso! Per giocare di nuovo clicca su Play"
+        );
         infoDiv.appendChild(h2);
         gameEnded = true;
       } else {
@@ -143,7 +156,6 @@ function campoMinato() {
 let gameEnded = false;
 const playButton = document.getElementById("play");
 playButton.addEventListener("click", campoMinato);
-
 
 // playButton.addEventListener("click", function () {
 //   resetBoard();
