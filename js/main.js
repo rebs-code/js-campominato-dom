@@ -36,9 +36,18 @@ function generateBombs(level) {
       bombs.push(randomNum);
     }
   }
-  console.log(bombs);
   return bombs;
 }
+
+//funzione esito del click
+function checkBomb(cellNumber, bombs) {
+  if (bombs.includes(cellNumber)) {
+    console.log('BOOM! Game over.');
+  } else {
+    console.log('You are safe!');
+  }
+}
+
 
 //funzione determina numero celle
 function setCellNumber(level) {
@@ -64,7 +73,8 @@ function setCellNumber(level) {
 //funzione crea board
 function createBoard(mainElement, cellNumber) {
   const cells = Math.sqrt(cellNumber);
-
+  const level = parseInt(document.getElementById('difficolta').value);
+  const bombs = generateBombs(level);
   const fragment = document.createDocumentFragment();
   for (let i = 1; i <= cellNumber; i++) {
     const myElement = createElement('div', 'cell', i);
@@ -73,6 +83,7 @@ function createBoard(mainElement, cellNumber) {
     myElement.addEventListener('click', function () {
       console.log(`Cell ${i} clicked!`);
       myElement.classList.add('blue');
+      checkBomb(i, bombs);
     });
 
     fragment.append(myElement);
@@ -88,7 +99,9 @@ function campoMinato() {
   console.log(level);
   const cellNumber = setCellNumber(level);
 
-  console.log(cellNumber);
+  const bombs = generateBombs(level);
+  console.log(bombs);
+
 
   createBoard(board, cellNumber);
 }
