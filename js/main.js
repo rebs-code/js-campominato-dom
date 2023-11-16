@@ -19,13 +19,13 @@ function resetBoard() {
 function generateBombs(level) {
   let maxNumber;
   switch (level) {
-    case 1:
+    case 3:
       maxNumber = 100;
       break;
     case 2:
       maxNumber = 81;
       break;
-    case 3:
+    case 1:
       maxNumber = 49;
       break;
   }
@@ -40,40 +40,96 @@ function generateBombs(level) {
   return bombs;
 }
 
+//funzione determina numero celle
+function setCellNumber(level) {
+  let cellNumber;
+  switch (level) {
+    case 2:
+      cellNumber = 81; //9*9 = 9^2
+      break;
+
+    case 3:
+      cellNumber = 49; //7*7 = 7^2
+      break;
+
+    case 1:
+    default:
+      cellNumber = 100; //9*9 = 9^2
+      break;
+  }
+
+  return cellNumber;
+}
+
+//funzione crea board
+function createBoard(mainElement, cellNumber) {
+  const cells = Math.sqrt(cellNumber);
+
+  const fragment = document.createDocumentFragment();
+  for (let i = 1; i <= cellNumber; i++) {
+    const myElement = createElement('div', 'cell', i);
+    myElement.classList.add(`cell-${cells}`);
+
+    myElement.addEventListener('click', function () {
+      console.log(`Cell ${i} clicked!`);
+      myElement.classList.add('blue');
+    });
+
+    fragment.append(myElement);
+  }
+  mainElement.append(fragment);
+}
+
+//funzione campo minato
+function campoMinato() {
+  resetBoard();
+  const board = document.getElementById('board');
+  const level = parseInt(document.getElementById('difficolta').value);
+  console.log(level);
+  const cellNumber = setCellNumber(level);
+
+  console.log(cellNumber);
+
+  createBoard(board, cellNumber);
+}
+
+
 // execution
 
 const playButton = document.getElementById("play");
+playButton.addEventListener('click', campoMinato);
 
-playButton.addEventListener("click", function () {
-  resetBoard();
-  //predo il valore del select
-  const inputValue = document.getElementById("difficolta").value;
-  if (inputValue === "1") {
-    for (let i = 1; i <= 49; i++) {
-      const myElement = createElement("div", "cell-7", i);
-      myElement.addEventListener("click", function () {
-        console.log(`Cell ${i} clicked!`);
-        myElement.classList.toggle("blue");
-      });
-      document.getElementById("board").append(myElement);
-    }
-  } else if (inputValue === "2") {
-    for (let i = 1; i <= 81; i++) {
-      const myElement = createElement("div", "cell-9", i);
-      myElement.addEventListener("click", function () {
-        console.log(`Cell ${i} clicked!`);
-        myElement.classList.toggle("blue");
-      });
-      document.getElementById("board").append(myElement);
-    }
-  } else if (inputValue === "3") {
-    for (let i = 1; i <= 100; i++) {
-      const myElement = createElement("div", "cell-10", i);
-      myElement.addEventListener("click", function () {
-        console.log(`Cell ${i} clicked!`);
-        myElement.classList.toggle("blue");
-      });
-      document.getElementById("board").append(myElement);
-    }
-  }
-});
+
+// playButton.addEventListener("click", function () {
+//   resetBoard();
+//   //predo il valore del select
+//   const inputValue = document.getElementById("difficolta").value;
+//   if (inputValue === "3") {
+//     for (let i = 1; i <= 49; i++) {
+//       const myElement = createElement("div", "cell-7", i);
+//       myElement.addEventListener("click", function () {
+//         console.log(`Cell ${i} clicked!`);
+//         myElement.classList.toggle("blue");
+//       });
+//       document.getElementById("board").append(myElement);
+//     }
+//   } else if (inputValue === "2") {
+//     for (let i = 1; i <= 81; i++) {
+//       const myElement = createElement("div", "cell-9", i);
+//       myElement.addEventListener("click", function () {
+//         console.log(`Cell ${i} clicked!`);
+//         myElement.classList.toggle("blue");
+//       });
+//       document.getElementById("board").append(myElement);
+//     }
+//   } else if (inputValue === "1") {
+//     for (let i = 1; i <= 100; i++) {
+//       const myElement = createElement("div", "cell-10", i);
+//       myElement.addEventListener("click", function () {
+//         console.log(`Cell ${i} clicked!`);
+//         myElement.classList.toggle("blue");
+//       });
+//       document.getElementById("board").append(myElement);
+//     }
+//   }
+// });
