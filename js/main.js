@@ -69,24 +69,32 @@ function setCellNumber(level) {
   return cellNumber;
 }
 
+//funzione counter
+function counter() {
+  const clickedCells = document.querySelectorAll(".blue").length;
+  document.getElementById("counter").textContent = `Il tuo punteggio è: ${clickedCells}`;
+}
+
 //funzione crea board
 function createBoard(mainElement, cellNumber) {
   const cells = Math.sqrt(cellNumber);
   const level = parseInt(document.getElementById("difficolta").value);
   const bombs = generateBombs(level);
   const fragment = document.createDocumentFragment();
+
+
   for (let i = 1; i <= cellNumber; i++) {
     const myElement = createElement("div", "cell", i);
     myElement.classList.add(`cell-${cells}`);
 
     myElement.addEventListener("click", function () {
       console.log(`Cell ${i} clicked!`);
-      myElement.classList.add("blue");
       checkBomb(i, bombs);
       if (bombs.includes(i)) {
         myElement.classList.add("red");
       } else {
         myElement.classList.add("blue");
+        counter();
       }
     });
 
@@ -105,7 +113,7 @@ function campoMinato() {
 
   const bombs = generateBombs(level);
   console.log(bombs);
-
+  counter();
   createBoard(board, cellNumber);
 }
 
